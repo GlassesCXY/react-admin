@@ -10,7 +10,7 @@ const initializeUsers = () => {
     // localStorage.clear();
     const users = JSON.parse(localStorage.getItem('users')) || [];
     if (users.length === 0) {
-        users.push({ username: 'admin', email: 'admin@example.com', password: 'admin', role:[1,2] });
+        users.push({id:1, username: 'admin', email: 'admin@example.com', password: 'admin',enable: true , role:[1,2] });
         localStorage.setItem('users', JSON.stringify(users));
     }
     return users;
@@ -61,9 +61,9 @@ mock.onPost('/api/register').reply(config => {
     if (userExists) {
         return [400, { message: 'Username or email already exists' }];
     }
-
+    const id = users.length ? users[users.length - 1].id + 1 : 1;
     // 新用户添加到用户列表
-    users.push({ username, email, password, role });
+    users.push({id:id, username, email, password, enable:true, role });
     setUsers(users);
 
     return [200, { message: 'Registration successful' }];
@@ -290,6 +290,33 @@ mock.onDelete(new RegExp('/api/roles/.+')).reply(config => {
     roles = roles.filter(role => role.id !== roleId);
     setRoles(roles);
     return [200, roles];
+});
+
+mock.onGet('/api/users').reply(200, getUsers());
+
+mock.onPost('/api/users').reply(config => {
+    const newUser = JSON.parse(config.data);
+    const users = getUsers();
+    newUser.id = users.length ? users[users.length - 1].id + 1 : 1;
+    users.push(newUser);
+    setUsers(users);
+    return [200, users];
+});
+
+mock.onPut('/api/users').reply(config => {
+    const updatedUser = JSON.parse(config.data);
+    let users = getUsers();
+    users = users.map(user => user.id === updatedUser.id ? updatedUser : user);
+    setUsers(users);
+    return [200, users];
+});
+
+mock.onDelete(new RegExp('/api/users/.+')).reply(config => {
+    const userId = Number(config.url.split('/').pop());
+    let users = getUsers();
+    users = users.filter(user => user.id !== userId);
+    setUsers(users);
+    return [200, users];
 });
 
 

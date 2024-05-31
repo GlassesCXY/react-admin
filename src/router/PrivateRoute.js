@@ -6,6 +6,7 @@ import MenuManagementPage from "../pages/MenuManagementPage";
 import {filterUnlockedMenus} from "../utils/menuUtil";
 import CustomPage from "../pages/CustomPage";
 import RoleManagementPage from "../pages/RolePage";
+import UserManagementPage from "../pages/UserPage";
 
 let menus = JSON.parse(localStorage.getItem("menus"));
 menus = filterUnlockedMenus(menus);
@@ -60,6 +61,11 @@ const PrivateRoute = () =>{
             path:"/admin/role",
             element:<RoleManagementPage/>
         },
+        {
+            path:"/admin/user",
+            element:<UserManagementPage/>
+        },
+
         ...custPage,
 
 

@@ -3,6 +3,7 @@ import {Form, Layout, Menu, message} from 'antd';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import {filterMenus, mergeFilterArrays} from "../utils/menuUtil";
+import Logo from '../assets/logo.jpg'
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
@@ -65,7 +66,11 @@ const CustomSidebar = ({  onCollapse }) => {
 
     return (
         <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-            <div className="logo" style={{ height: '32px', margin: '16px', background: 'rgba(255, 255, 255, 0.2)' }} />
+            <div className="logo" style={{ height: '32px', margin: '16px', background: 'rgba(255, 255, 255, 0.2)' }} >
+                <img src={Logo} alt="Logo" style={{ height: '100%', width: 'auto' }} />
+                <span style={{ color: '#ffffff', fontSize: '18px', fontWeight: 'bold', marginLeft: '16px' }}>react-admin</span>
+
+            </div>
             <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" onClick={handleMenuClick}>
                 {
                     realRenderMenu()
